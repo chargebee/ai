@@ -15,6 +15,44 @@ Base URL: `https://[your-site].chargebee.com/api/v2`
 - **GET**: Read-only operations (retrieve, list)
 - **POST**: Write operations (create, update, delete)
 
+## Request and Response format
+
+A majority of the API endpoints expect the request to be of type `application/x-www-form-urlencoded`. Nested objects are expected to conform to the commonly used **extended** URL encoding pattern. For example, a JSON request and it's equivalent URL encoded `curl` request is shown below:
+
+JSON:
+
+```json
+{
+  "customer": {
+    "first_name": "John",
+    "last_name": "Doe",
+    "allow_direct_debit": true,
+    "bank_account": {
+      "account_number": "000222222227",
+      "bank_name": "US Bank",
+      "account_type": "savings"
+    }
+  }
+}
+```
+
+URL Encoded:
+
+```bash
+curl  https://{CHARGEBEE_SITE}.chargebee.com/api/v2/customers \
+  -X POST  \
+  -u {site_api_key}:\
+  -d "first_name"="John" \
+  -d "last_name"="Doe" \
+  -d "allow_direct_debit"="true" \
+  -d "bank_account[account_number]"=000222222227 \
+  -d "bank_account[routing_number]"=110000000 \
+  -d "bank_account[bank_name]"="US Bank" \
+  -d "bank_account[account_type]"="savings"
+```
+
+All responses are of type `application/json`.
+
 ## Core Resources
 
 ### Customers
