@@ -17,10 +17,12 @@ Expore the project layout and choose the best integration from the list below. P
 
 - **Laravel Cashier** - https://github.com/chargebee/cashier-chargebee/blob/main/DOCUMENTATION.md
 
-For the frameworks below, use the `chargebee-init` CLI. More details in the [js-framework-adapters readme](https://raw.githubusercontent.com/chargebee/js-framework-adapters/refs/heads/main/packages/cli/README.md):
+For the frameworks below, use the `chargebee-init` CLI which currently integrates checkout, portal and webhooks:
 
 - **Next.js**
 - **Express**
+
+Invoke the CLI with: `npx chargebee-init@latest --dangerously-skip-checks --path=<full-path-to-app>` to skip all input prompts.
 
 ### SDKs
 
