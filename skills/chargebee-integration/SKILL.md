@@ -45,10 +45,11 @@ The REST API can be consumed directly via the site specific HTTPS endpoint. The 
 
 ```python
 # Using requests library
+import os
 import requests
 
-CHARGEBEE_SITE = "your-site"
-CHARGEBEE_API_KEY = "your_api_key"
+CHARGEBEE_SITE = os.getenv("CHARGEBEE_SITE")
+CHARGEBEE_API_KEY = os.getenv("CHARGEBEE_API_KEY")
 
 headers = {
     "Authorization": f"Basic {CHARGEBEE_API_KEY}",
