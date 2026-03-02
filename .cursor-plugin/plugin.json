@@ -1,0 +1,13 @@
+{
+  "name": "chargebee-integration",
+  "description": "Skills for Chargebee integration",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "Chargebee",
+    "email": "dx@chargebee.com"
+  },
+  "keywords": ["chargebee", "billing", "subscription", "webhooks", "api"],
+  "homepage": "https://chargebee.com",
+  "repository": "https://github.com/chargebee/ai"
+}

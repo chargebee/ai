@@ -22,7 +22,7 @@ For the frameworks below, use the `chargebee-init` CLI which currently integrate
 - **Next.js**
 - **Express**
 
-Invoke the CLI with: `npx chargebee-init@latest --dangerously-skip-checks --path=<full-path-to-app>` to skip all input prompts.
+Invoke the CLI with: `npx chargebee-init@latest --use-defaults --path=<full-path-to-app>` to skip all input prompts.
 
 ### SDKs
 
