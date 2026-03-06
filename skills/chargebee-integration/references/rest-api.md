@@ -10,6 +10,14 @@ Authorization: Basic <api_key>
 
 Base URL: `https://[your-site].chargebee.com/api/v2`
 
+### Authentication Security
+
+- Store API keys in server-side environment variables only.
+- Never embed API keys in frontend code, mobile binaries, or public repositories.
+- Never log full API keys or include them in error messages.
+- Rotate keys regularly and revoke compromised credentials immediately.
+- Use separate keys for development, staging, and production.
+
 ## HTTP Methods
 
 - **GET**: Read-only operations (retrieve, list)
