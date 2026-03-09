@@ -8,7 +8,7 @@ Chargebee sends webhook notifications for important billing events. Webhooks are
 - Include a delay between the actual event and delivery
 
 **Best practices:**
-- Verify webhook signatures
+- Validate webhook requests with Basic Auth
 - Implement idempotency using `event.id`
 - Return 200 OK quickly (process asynchronously)
 - Handle all event types gracefully
@@ -238,29 +238,33 @@ Sent when Monthly Recurring Revenue (MRR) or committed MRR changes.
 
 **Content**: `mrr` object, `subscription` object, `customer` object
 
-## Webhook Verification
+## Webhook Authentication
 
-Verify webhook authenticity using the signature header:
+Validate webhook authenticity using Basic Auth credentials configured for your webhook endpoint.
 
 ```python
-import chargebee
+import os
+import secrets
 
-def verify_webhook(payload, signature):
-    try:
-        chargebee.Webhook.verify_signature(payload, signature)
-        return True
-    except Exception as e:
+WEBHOOK_USERNAME = os.getenv("CHARGEBEE_WEBHOOK_USERNAME")
+WEBHOOK_PASSWORD = os.getenv("CHARGEBEE_WEBHOOK_PASSWORD")
+
+def is_valid_webhook_auth(auth):
+    if not auth:
         return False
+    username_ok = secrets.compare_digest(auth.username or "", WEBHOOK_USERNAME or "")
+    password_ok = secrets.compare_digest(auth.password or "", WEBHOOK_PASSWORD or "")
+    return username_ok and password_ok
 ```
 
-The signature is sent in the `X-Chargebee-Signature` header.
+Reject requests with invalid or missing credentials before parsing and processing payloads.
 
 ## Idempotency
 
 Always check `event.id` to avoid processing duplicate webhooks:
 
 ```python
-processed_events = set()  # Or use a database
+processed_events = set()  # Use a database in production.
 
 def handle_webhook(event):
     event_id = event['id']

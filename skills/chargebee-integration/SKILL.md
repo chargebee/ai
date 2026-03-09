@@ -22,7 +22,7 @@ For the frameworks below, use the `chargebee-init` CLI which currently integrate
 - **Next.js**
 - **Express**
 
-Invoke the CLI with: `npx chargebee-init@latest --use-defaults --path=<full-path-to-app>` to skip all input prompts.
+Invoke the CLI with: `npx chargebee-init --use-defaults --path=<full-path-to-app>` to skip all input prompts.
 
 ### SDKs
 
@@ -41,6 +41,11 @@ For details on data model, supported operations, and other available resources, 
 ### REST API
 
 The REST API can be consumed directly via the site specific HTTPS endpoint. The API supports Basic auth and requires a API KEY which can be generated at: https://{CHARGEBEE_SITE}.chargebee.com/apikeys_and_webhooks/api. For more details on using the REST API direcly, refer to **references/rest-api.md**.
+
+Security notes:
+- Load API keys from environment variables only.
+- Never hardcode or log API keys.
+- Rotate keys regularly and scope access by environment.
 
 
 ```python
@@ -83,7 +88,7 @@ customer = result.customer
 
 Chargebee sends webhook events for important billing events. Webhook handlers should:
 
-1. Verify webhook signatures for security
+1. Validate webhook requests using Basic Auth before processing payloads
 2. Handle idempotency (events may be sent multiple times)
 3. Return 200 OK quickly (process asynchronously if needed)
 4. Handle various event types appropriately
@@ -92,19 +97,30 @@ Chargebee sends webhook events for important billing events. Webhook handlers sh
 
 ```python
 from flask import Flask, request
-import chargebee
+import os
+import secrets
 
 app = Flask(__name__)
+processed_events = set()  # Use persistent storage in production.
+
+WEBHOOK_USERNAME = os.getenv("CHARGEBEE_WEBHOOK_USERNAME")
+WEBHOOK_PASSWORD = os.getenv("CHARGEBEE_WEBHOOK_PASSWORD")
 
 @app.route('/chargebee/webhook', methods=['POST'])
 def handle_webhook():
-    payload = request.data
-    signature = request.headers.get('X-Chargebee-Signature')
+    auth = request.authorization
+    if not auth:
+        return '', 401
+    if not secrets.compare_digest(auth.username or '', WEBHOOK_USERNAME or ''):
+        return '', 401
+    if not secrets.compare_digest(auth.password or '', WEBHOOK_PASSWORD or ''):
+        return '', 401
 
-    # Verify signature (recommended for security)
-    # chargebee.Webhook.verify_signature(payload, signature)
+    event = request.get_json(force=True)
+    event_id = event['id']
+    if event_id in processed_events:
+        return '', 200
 
-    event = request.json
     event_type = event['event_type']
 
     # Process based on event type
@@ -114,6 +130,7 @@ def handle_webhook():
         handle_subscription_cancelled(event['content'])
     # ... handle other events
 
+    processed_events.add(event_id)
     return '', 200
 ```
 
