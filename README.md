@@ -7,11 +7,16 @@ Official [Agent Skills](https://agentskills.io/) for integrating Chargebee into 
 | Skill | Description |
 | --- | --- |
 | `chargebee-integration` | Integrate Chargebee billing into your app — covers API patterns, webhook handling, SDK usage, subscription lifecycle, payment processing etc. |
+| `chargebee-upgrade` | Migrate Chargebee SDKs to the latest version — detects legacy patterns and applies version-specific transformation rules. |
 
 ## Installation
 
 ```bash
+# Integration skill
 npx skills add chargebee/ai --skill chargebee-integration
+
+# Upgrade/migration skill
+npx skills add chargebee/ai --skill chargebee-upgrade
 ```
 
 ## Feedback
