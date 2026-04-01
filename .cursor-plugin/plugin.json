@@ -1,6 +1,6 @@
 {
   "name": "chargebee-integration",
-  "description": "Skills for Chargebee integration",
+  "description": "Use Chargebee's API integration patterns, webhook handling, SDK usage, and schema references for billing operations in Cursor.",
   "version": "0.1.0",
   "license": "MIT",
   "author": {
