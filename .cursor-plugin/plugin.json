@@ -1,5 +1,5 @@
 {
-  "name": "chargebee-integration",
+  "name": "chargebee",
   "description": "Use Chargebee's API integration patterns, webhook handling, SDK usage, and schema references for billing operations in Cursor.",
   "version": "0.1.0",
   "license": "MIT",
