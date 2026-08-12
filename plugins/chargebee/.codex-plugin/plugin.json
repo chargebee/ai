@@ -1,0 +1,42 @@
+{
+  "name": "chargebee",
+  "version": "0.1.1",
+  "description": "Chargebee plugin for Codex to help with Chargebee integrations and the Chargebee MCP server.",
+  "author": {
+    "name": "Chargebee",
+    "email": "dx@chargebee.com",
+    "url": "https://chargebee.com"
+  },
+  "homepage": "https://chargebee.com",
+  "repository": "https://github.com/chargebee/ai",
+  "license": "MIT",
+  "keywords": [
+    "chargebee",
+    "billing",
+    "subscription",
+    "payments",
+    "webhooks",
+    "api"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Chargebee",
+    "shortDescription": "Billing integrations and Chargebee MCP server for Codex.",
+    "longDescription": "Bundle Chargebee billing skills with the Chargebee MCP server configuration for use in Codex. Covers API patterns, webhook handling, SDK usage, subscription lifecycle, and payment processing.",
+    "developerName": "Chargebee",
+    "category": "Finance",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://chargebee.com",
+    "privacyPolicyURL": "https://www.chargebee.com/privacy",
+    "termsOfServiceURL": "https://www.chargebee.com/company/terms",
+    "defaultPrompt": [
+      "Use Chargebee to help me integrate billing into my app.",
+      "Use Chargebee to look up a customer's subscription and invoices."
+    ],
+    "brandColor": "#FF6E36"
+  }
+}

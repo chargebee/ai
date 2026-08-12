@@ -1,0 +1,20 @@
+{
+  "name": "chargebee",
+  "interface": {
+    "displayName": "Chargebee"
+  },
+  "plugins": [
+    {
+      "name": "chargebee",
+      "source": {
+        "source": "local",
+        "path": "./plugins/chargebee"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Finance"
+    }
+  ]
+}
