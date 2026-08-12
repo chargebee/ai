@@ -1,6 +1,6 @@
 {
   "name": "chargebee",
-  "description": "Use Chargebee's API integration patterns, webhook handling, SDK usage, and schema references for billing operations in Cursor.",
+  "description": "Chargebee plugin for Cursor to help with Chargebee integrations and the Chargebee MCP server.",
   "version": "0.1.0",
   "license": "MIT",
   "author": {
@@ -8,7 +8,8 @@
     "email": "dx@chargebee.com"
   },
   "logo": "assets/logo.svg",
-  "keywords": ["chargebee", "billing", "subscription", "webhooks", "api"],
+  "keywords": ["chargebee", "billing", "subscription", "payments", "webhooks", "api"],
   "homepage": "https://chargebee.com",
-  "repository": "https://github.com/chargebee/ai"
+  "repository": "https://github.com/chargebee/ai",
+  "skills": "./skills/"
 }
