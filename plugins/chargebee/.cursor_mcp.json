@@ -1,8 +1,10 @@
 {
-    "mcpServers": {
-      "chargebee": {
-        "type": "http",
-        "url": "https://mcp.stripe.com"
+  "mcpServers": {
+    "chargebee": {
+      "url": "https://${MCP_DOMAIN:-not-setup}",
+      "auth": {
+        "CLIENT_ID": "cb_mcp_client_6okKzVS0h23R21m"
       }
     }
   }
+}

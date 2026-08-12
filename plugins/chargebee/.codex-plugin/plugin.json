@@ -20,6 +20,24 @@
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "MCP_DOMAIN": {
+        "type": "string",
+        "title": "Chargebee MCP Domain",
+        "description": "Select the MCP server domain based on your Chargebee site region.",
+        "enum": [
+          "app.mcp.chargebee.com",
+          "app.mcp.eu.chargebee.com",
+          "app.mcp.au.chargebee.com"
+        ]
+      }
+    },
+    "required": [
+      "MCP_DOMAIN"
+    ]
+  },
   "interface": {
     "displayName": "Chargebee",
     "shortDescription": "Billing integrations and Chargebee MCP server for Codex.",
