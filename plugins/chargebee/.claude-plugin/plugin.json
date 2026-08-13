@@ -1,9 +1,0 @@
-{
-  "name": "chargebee",
-  "description": "Chargebee plugin for Claude Code to help with Chargebee integrations and the Chargebee MCP server.",
-  "author": {
-    "name": "Chargebee",
-    "email": "dx@chargebee.com",
-    "url": "https://chargebee.com"
-  }
-}

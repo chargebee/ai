@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "chargebee",
-      "source": "./plugins/chargebee",
+      "source": "./providers/cursor/",
       "description": "Chargebee plugin for Cursor to help with Chargebee integrations and the Chargebee MCP server.",
       "version": "0.1.1",
       "author": {

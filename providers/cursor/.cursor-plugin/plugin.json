@@ -1,0 +1,12 @@
+{
+  "name": "chargebee",
+  "description": "Chargebee plugin for Cursor to help with Chargebee integrations and the Chargebee MCP server.",
+  "author": {
+    "name": "Chargebee",
+    "email": "dx@chargebee.com",
+    "url": "https://chargebee.com"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json",
+  "logo": "assets/logo.svg"
+}

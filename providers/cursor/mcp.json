@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "chargebee": {
-      "url": "https://${MCP_DOMAIN:-not-setup}",
+      "url": "https://prod-test.mcp.chargebee.com/knowledge_base_agent",
       "auth": {
         "CLIENT_ID": "cb_mcp_client_6okKzVS0h23R21m"
       }
