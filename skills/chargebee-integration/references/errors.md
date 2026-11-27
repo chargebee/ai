@@ -1,6 +1,6 @@
 # Errors
 
-Error codes with their root cause and possible solutions, sorted by code. The error response format and retry guidance are at https://apidocs.chargebee.com/docs/api/error-handling.md, and the full list is at https://apidocs.chargebee.com/docs/api/errors.md.
+Gateway error codes, sorted by code. Each links to a page with the root cause and possible solutions. The error response format and retry guidance are at https://apidocs.chargebee.com/docs/api/error-handling.md, and the full list is at https://apidocs.chargebee.com/docs/api/errors.md.
 
 
 ## gateway.bank_account

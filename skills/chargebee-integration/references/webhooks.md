@@ -32,10 +32,7 @@ Each webhook is an HTTP POST with content type `application/json`. Reference: ht
       "resource_version": 1702645601793
       // ... customer object fields
     }
-  },
-  "webhooks": [
-    { "id": "whv2_123", "webhook_status": "scheduled", "object": "webhook" }
-  ]
+  }
 }
 ```
 
@@ -273,30 +270,35 @@ To turn on Basic Auth, enable **Protect webhook URL with basic authentication** 
 
 ## Idempotency
 
-Always check `event.id` to avoid processing duplicate webhooks. Store processed IDs in a persistent store such as a database or Redis. The last retry arrives about 3 days and 7 hours after the event, so keep IDs for at least that long:
+Chargebee can deliver the same event more than once. Deduplicate on `event.id`:
+
+- Save each event to a persistent inbox, such as a database table with a unique key on `event.id`, in a single write. Then return `2XX`. A duplicate-key error means the event was already received.
+- Process inbox rows in a background worker. If processing fails, retry from the inbox: Chargebee retries only deliveries that did not get a `2XX`.
+- Make side effects such as emails or provisioning safe to repeat, for example by keying them on `event.id`, because a worker can fail after the effect and run again.
+- Keep IDs for at least 3 days and 7 hours, when the last retry arrives.
 
 ```python
-def handle_webhook(event):
-    # Save the event and its ID in one write: an inbox table with a unique key on event id.
+def receive(event):
     try:
-        save_to_inbox(event['id'], event)
-    except DuplicateKeyError:
-        return  # duplicate delivery, already recorded
-    # a background worker processes inbox rows; return 2XX now
+        save_to_inbox(event["id"], event)  # one write; unique key on event id
+    except DuplicateKeyError:  # your driver's unique-key violation error
+        pass  # already received
+    # return 2XX; a background worker processes inbox rows
 ```
-
-Do not record the ID and queue the event in separate steps: a crash between them loses the event. If processing later fails, the worker should retry from your queue; do not rely on Chargebee to redeliver an event you already acknowledged. The inbox drops duplicate deliveries but not repeated side effects: if a worker can fail after sending an email or provisioning access, key that action on the event ID so a retry does not repeat it.
 
 ## Out-of-order Delivery
 
-Webhooks can arrive out of order. Most resources in a webhook carry `resource_version`, a millisecond timestamp updated on each change; some, such as `impacted_items`, do not. Update your stored copy of a resource only if the incoming version is newer. Event-specific work, such as handling `subscription_renewed`, still runs once per event ID. Do the check and the write as one atomic operation, so two workers cannot both pass the check and save an older version last:
+Events can arrive out of order. Most resources carry `resource_version`, a millisecond timestamp updated on each change; some, such as `impacted_items`, do not.
+
+- Update your stored copy of a resource only if the incoming `resource_version` is newer. Make the check and the write one atomic operation, such as a conditional update, so concurrent workers cannot overwrite a newer version with an older one.
+- Decide access from the stored subscription state, or by retrieving the subscription from Chargebee, not from the payload of the event being processed.
+- Work that does not change access, such as recording a renewal, still runs for each new event ID, even when its resource snapshot is older.
 
 ```python
-def apply_if_newer(incoming):
-    # One conditional write in your store, for example an update or upsert
-    # that only matches when the stored resource_version is older.
-    # A separate read-then-save lets two workers overwrite a newer version.
-    save_if_newer(incoming["id"], incoming, incoming["resource_version"])
+def apply_if_newer(resource):
+    # A single conditional write that only matches when the stored
+    # resource_version is older than resource["resource_version"].
+    save_if_newer(resource["id"], resource, resource["resource_version"])
 ```
 
 ## Retry Behavior

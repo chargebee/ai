@@ -27,7 +27,7 @@ Base URL: `https://[your-site].chargebee.com/api/v2`
 
 ## Request and Response format
 
-A majority of the API endpoints expect the request to be of type `application/x-www-form-urlencoded`. Nested objects are expected to conform to the commonly used **extended** URL encoding pattern. For example, a JSON request and its equivalent URL encoded `curl` request is shown below:
+A majority of the API endpoints expect the request to be of type `application/x-www-form-urlencoded`. Nested objects are expected to conform to the commonly used **extended** URL encoding pattern. For example, a JSON request and its equivalent URL-encoded `curl` request are shown below:
 
 JSON:
 
@@ -116,7 +116,7 @@ These are the Product Catalog 2.0 operations. Do not use `POST /subscriptions`, 
 POST /customers/{customer-id}/subscription_for_items
 ```
 Body parameters:
-- `subscription_items[item_price_id][0]`: The plan item price, followed by any addon or charge item prices at indexes 1, 2, …
+- `subscription_items[item_price_id][0]`, `[1]`, …: One plan item price plus any addon or charge item prices
 - `subscription_items[quantity][0]`: Quantity, for per-unit, tiered, volume and stairstep pricing
 - `billing_cycles`: Number of billing cycles
 - `trial_end`: Trial end timestamp
@@ -134,7 +134,7 @@ POST /subscriptions/{subscription-id}/update_for_items
 Body parameters:
 - `subscription_items[item_price_id][0]`, `subscription_items[quantity][0]`: The items to add or change
 - `replace_items_list`: true to replace the whole item list instead of merging
-- `change_option`: immediately/end_of_term/specific_date. `specific_date` requires `changes_scheduled_at`. To schedule a future change, use the ramps API (`POST /subscriptions/{subscription-id}/create_ramp`); a future `changes_scheduled_at` is deprecated for scheduling.
+- `change_option`: `immediately` applies the change now. `end_of_term` and `specific_date` (with `changes_scheduled_at`) schedule it for later, but Chargebee deprecates both for scheduling in favour of ramps (`POST /subscriptions/{subscription-id}/create_ramp`). Subscription Ramps is in early access; on a site without it, use the deprecated options.
 - `prorate`: true/false
 - `invoice_immediately`: true/false
 
@@ -255,8 +255,8 @@ Body parameters:
 - `pricing_model`: flat_fee/per_unit/tiered/volume/stairstep
 - `price`: Price in the smallest currency unit (for example cents), for flat_fee and per_unit
 - `currency_code`: For example `USD`
-- `period`: Number of period units in a billing cycle, for example `1`
-- `period_unit`: day/week/month/year
+- `period`: Number of period units in a billing cycle, for example `1`. Required for plan and addon item prices; omit for charge item prices.
+- `period_unit`: day/week/month/year. Required for plan and addon item prices; omit for charge item prices.
 
 **Retrieve and List**
 ```
@@ -370,4 +370,4 @@ Make POST requests safe to retry by sending a unique `chargebee-idempotency-key`
 
 ## Rate Limiting
 
-Chargebee limits API requests per site per minute (150 on test sites; on live sites it depends on the plan) and also limits concurrent requests. Exceeding a limit returns HTTP `429` with an `api_error_code` such as `api_request_limit_exceeded` or `lock_timeout` (concurrent updates to the same resource). If the response has a `Retry-After` header, wait that many seconds before retrying; otherwise back off exponentially. Details: https://apidocs.chargebee.com/docs/api/error-handling.md#api_rate_limits
+Chargebee limits API requests per site per minute (150 on test sites; on live sites it depends on the plan) and also limits concurrent requests. Exceeding a limit returns HTTP `429` with `api_error_code` `api_request_limit_exceeded`. Concurrent updates to the same resource can also return `429`, with `lock_timeout`. If the response has a `Retry-After` header, wait that many seconds before retrying; otherwise back off exponentially. Details: https://apidocs.chargebee.com/docs/api/error-handling.md#api_rate_limits

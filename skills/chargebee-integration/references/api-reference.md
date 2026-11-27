@@ -95,7 +95,7 @@
   - [Delete a subscription ramp](https://apidocs.chargebee.com/docs/api/ramps/delete-a-ramp.md)
   - [Retrieve a subscription ramp](https://apidocs.chargebee.com/docs/api/ramps/retrieve-a-ramp.md)
 - Usages (legacy metered billing; for new usage-based billing integrations use the Usage Events API under Usage Based Billing)
-  - [Usages: object, attributes and operations](https://apidocs.chargebee.com/docs/api/usages/usage-object.md)
+  - [Usage object](https://apidocs.chargebee.com/docs/api/usages/usage-object.md)
   - [Retrieve Usages for an Invoice as PDF](https://apidocs.chargebee.com/docs/api/usages/retrieve-usages-for-an-invoice-as-pdf.md)
 - Purchases
   - [Purchase object](https://apidocs.chargebee.com/docs/api/purchases/purchase-object.md)

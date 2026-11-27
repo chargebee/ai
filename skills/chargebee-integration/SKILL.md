@@ -11,7 +11,7 @@ IMPORTANT: Prefer retrieval-led reasoning over pre-training-led reasoning when i
 
 ## Quick Start
 
-Explore the project layout and choose the best integration from the list below. Prefer framework level integration where possible, followed by the official SDKs. Fallback to REST API only if the other options aren't feasible.
+Explore the project layout and choose the best integration from the list below. Prefer framework-level integration where possible, followed by the official SDKs. Fall back to the REST API only if the other options aren't feasible.
 
 ### Frameworks
 
@@ -38,7 +38,7 @@ Chargebee provides official SDKs for multiple languages. Install the latest rele
 | Ruby | `chargebee` (RubyGems) | https://github.com/chargebee/chargebee-ruby |
 | Go | `github.com/chargebee/chargebee-go/v4` | https://github.com/chargebee/chargebee-go |
 
-Create one client and call methods on it. Do not use the older global `configure` pattern.
+Follow the README for the SDK version you install. The Node.js, Python, PHP, Java and Go SDKs use a client instance, as below; the Ruby and .NET SDKs use a global configuration.
 
 ```typescript
 // Node.js / TypeScript SDK (v3)
@@ -52,7 +52,7 @@ const chargebee = new Chargebee({
 const { customer } = await chargebee.customer.retrieve(customerId);
 
 // Product Catalog 2.0: create a subscription for an existing customer.
-// The idempotency key makes the request safe to retry.
+// Retrying with the same idempotency key and parameters within 30 minutes returns the original result.
 const { subscription } = await chargebee.subscription.createWithItems(
   customer.id,
   { subscription_items: [{ item_price_id: "pro-USD-monthly", quantity: 1 }] },
@@ -130,13 +130,13 @@ customer = result.customer
 Chargebee sends webhook events for important billing events. Webhook handlers should:
 
 1. Validate webhook requests using Basic Auth before processing payloads
-2. Handle idempotency: events may be sent more than once, so store processed `event.id` values for at least 3 days and 7 hours
+2. Handle idempotency: events may be sent more than once, so store received `event.id` values for at least 3 days and 7 hours
 3. Ignore stale updates: events can arrive out of order, so apply a resource only if its `resource_version` is newer than the stored one
 4. Return a `2XX` status quickly and process asynchronously if needed. On live sites Chargebee times out after 20 seconds to connect, 20 seconds to read, or 60 seconds in total, then retries
 5. Handle various event types appropriately
-6. Grant or remove access in your app from webhooks or a server-side retrieve of the hosted page or subscription, never from a checkout redirect alone
+6. Grant or remove access in your app from webhooks or by retrieving the hosted page or subscription on your server, never from a checkout redirect alone
 
-The Node.js SDK includes a webhook handler (`chargebee.webhooks`) that parses events and validates Basic Auth automatically when `CHARGEBEE_WEBHOOK_USERNAME` and `CHARGEBEE_WEBHOOK_PASSWORD` are set. See the "Handle webhooks" section of the chargebee-node README.
+The Node.js SDK includes a webhook handler (`chargebee.webhooks`) that parses events and validates Basic Auth automatically when `CHARGEBEE_WEBHOOK_USERNAME` and `CHARGEBEE_WEBHOOK_PASSWORD` are set. If either is missing, the handler skips authentication, so check both at startup. See the "Handle webhooks" section of the chargebee-node README.
 
 #### Basic Webhook Handler Pattern
 
@@ -164,26 +164,24 @@ def handle_webhook():
 
     event = request.get_json(force=True)
 
-    # Save the event and its ID in one write (inbox table, unique key on event id),
-    # then acknowledge. A worker processes the rows later.
     try:
-        save_to_inbox(event['id'], event)
-    except DuplicateKeyError:
-        return '', 200  # duplicate delivery
-    return '', 200
+        save_to_inbox(event['id'], event)  # one write; unique key on event id
+    except DuplicateKeyError:  # your driver's unique-key violation error
+        pass  # duplicate delivery
+    return '', 200  # a background worker processes inbox rows
 ```
 
-The worker routes on `event['event_type']` (for example `subscription_created`, `subscription_cancelled`) and updates its stored copy of a resource only if the incoming `resource_version` is newer; event-specific work still runs once per event ID. Do not record the ID and queue the event in separate steps: a crash between them loses the event.
+The worker routes on `event['event_type']` (for example `subscription_created`, `subscription_cancelled`), updates stored resources only when `resource_version` is newer, and decides access from the stored state.
 
-For complete webhook event schemas and all event types, see **references/webhooks.md**.
+For idempotency, ordering, retries and event schemas, see **references/webhooks.md**.
 
 
 ## References
 
 - **references/api-reference.md** - Index of every API resource and operation, linking to the Markdown page for each. Each page has the request and response objects and example code for all official SDKs.
-- **references/rest-api.md** - Details on consuming the REST API using a HTTP client for languages that don't have an SDK, including authentication, Product Catalog 2.0 operations, filters, idempotency and rate limits
+- **references/rest-api.md** - Details on consuming the REST API using an HTTP client for languages that don't have an SDK, including authentication, Product Catalog 2.0 operations, filters, idempotency and rate limits
 - **references/webhooks.md** - Webhook payload, authentication, idempotency, ordering, retries and timeouts
-- **references/errors.md** - Gateway error codes (`error_cause_id`) with causes and fixes
+- **references/errors.md** - Index of gateway error codes (`error_cause_id`), each linking to its cause and fix
 - **references/events.md** - All webhook event types, grouped by resource, with the events most integrations handle listed first
 
 Every page on apidocs.chargebee.com has a Markdown version at the same URL with `.md` appended. The curated index for agents is https://apidocs.chargebee.com/llms.txt.
