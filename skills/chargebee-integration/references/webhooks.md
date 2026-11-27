@@ -10,26 +10,33 @@ Chargebee sends webhook notifications for important billing events. Webhooks are
 **Best practices:**
 - Validate webhook requests with Basic Auth
 - Implement idempotency using `event.id`
-- Return 200 OK quickly (process asynchronously)
-- Handle all event types gracefully
+- Ignore stale updates using the resource's `resource_version`
+- Return a `2XX` status quickly and process asynchronously
+- Handle all event types gracefully, including types you do not use
+
+Each webhook is an HTTP POST with content type `application/json`. Reference: https://apidocs.chargebee.com/docs/api/events.md
 
 ## Webhook Payload Structure
 
 ```json
 {
   "id": "ev_123",
-  "occurred_at": 1234567890,
+  "occurred_at": 1702645601,
   "source": "admin_console",
+  "object": "event",
+  "api_version": "v2",
   "event_type": "customer_created",
-  "webhook_status": "scheduled",
   "content": {
     "customer": {
       "id": "cust_123",
+      "resource_version": 1702645601793
       // ... customer object fields
     }
   }
 }
 ```
+
+Check that `api_version` matches the API version of the client library your webhook server uses.
 
 ## Customer Events
 
@@ -86,7 +93,7 @@ Triggered when a future subscription begins at the scheduled start date.
 **Content**: `subscription` object, `customer` object
 
 ### subscription_trial_end_reminder
-Sent as the trial period approaches completion (typically 3 days before).
+Sent 6 days before the trial period ends.
 
 **Content**: `subscription` object, `customer` object
 
@@ -121,7 +128,7 @@ Triggered when a paused subscription resumes.
 **Content**: `subscription` object, `customer` object
 
 ### subscription_cancelled
-Fired when a subscription is cancelled.
+Fired when a subscription is cancelled. If it was cancelled for non-payment or because no card was present, `subscription.cancel_reason` says so.
 
 **Content**: `subscription` object, `customer` object
 
@@ -138,7 +145,7 @@ Triggered when a subscription is permanently deleted.
 ## Invoice Events
 
 ### invoice_generated
-Fired when an invoice is created (draft or posted).
+Fired when a new invoice is generated. For metered billing, fired when a pending invoice is closed.
 
 **Content**: `invoice` object, `customer` object
 
@@ -250,7 +257,7 @@ WEBHOOK_USERNAME = os.getenv("CHARGEBEE_WEBHOOK_USERNAME")
 WEBHOOK_PASSWORD = os.getenv("CHARGEBEE_WEBHOOK_PASSWORD")
 
 def is_valid_webhook_auth(auth):
-    if not auth:
+    if not auth or not WEBHOOK_USERNAME or not WEBHOOK_PASSWORD:
         return False
     username_ok = secrets.compare_digest(auth.username or "", WEBHOOK_USERNAME or "")
     password_ok = secrets.compare_digest(auth.password or "", WEBHOOK_PASSWORD or "")
@@ -259,31 +266,61 @@ def is_valid_webhook_auth(auth):
 
 Reject requests with invalid or missing credentials before parsing and processing payloads.
 
+To turn on Basic Auth, enable **Protect webhook URL with basic authentication** in the webhook settings and set a username and password. To confirm an event is genuine, you can also fetch it again with `GET /events/{event-id}` and process the fetched copy. Chargebee sends webhooks from a fixed set of IP addresses: https://apidocs.chargebee.com/docs/api/webhooks.md
+
 ## Idempotency
 
-Always check `event.id` to avoid processing duplicate webhooks:
+Chargebee can deliver the same event more than once. Deduplicate on `event.id`:
+
+- Save each event to a persistent inbox, such as a database table with a unique key on `event.id`, in a single write. Then return `2XX`. A duplicate-key error means the event was already received.
+- Process inbox rows in a background worker. If processing fails, retry from the inbox: Chargebee retries only deliveries that did not get a `2XX`.
+- Make side effects such as emails or provisioning safe to repeat, for example by keying them on `event.id`, because a worker can fail after the effect and run again.
+- Keep IDs for at least 3 days and 7 hours, when the last retry arrives.
 
 ```python
-processed_events = set()  # Use a database in production.
+def receive(event):
+    try:
+        save_to_inbox(event["id"], event)  # one write; unique key on event id
+    except DuplicateKeyError:  # your driver's unique-key violation error
+        pass  # already received
+    # return 2XX; a background worker processes inbox rows
+```
 
-def handle_webhook(event):
-    event_id = event['id']
+## Out-of-order Delivery
 
-    if event_id in processed_events:
-        return  # Already processed
+Events can arrive out of order. Most resources carry `resource_version`, a millisecond timestamp updated on each change; some, such as `impacted_items`, do not.
 
-    # Process event
-    process_event(event)
+- Update your stored copy of a resource only if the incoming `resource_version` is newer. Make the check and the write one atomic operation, such as a conditional update, so concurrent workers cannot overwrite a newer version with an older one.
+- Decide access from the stored subscription state, or by retrieving the subscription from Chargebee, not from the payload of the event being processed. Process events for the same subscription one at a time, for example with a per-subscription lock or queue partition, so two workers cannot act on different versions.
+- Work that does not change access, such as recording a renewal, still runs for each new event ID, even when its resource snapshot is older.
 
-    # Mark as processed
-    processed_events.add(event_id)
+```python
+def apply_if_newer(resource):
+    # A single conditional write that only matches when the stored
+    # resource_version is older than resource["resource_version"].
+    save_if_newer(resource["id"], resource, resource["resource_version"])
 ```
 
 ## Retry Behavior
 
-Chargebee retries failed webhooks (non-200 responses) with exponential backoff:
-- First retry: After 5 minutes
-- Subsequent retries: Increasing intervals
-- Maximum retries: Continues for up to 3 days
+A webhook succeeds only when your endpoint returns a `2XX` status within the timeout. Otherwise Chargebee retries it up to 7 times:
 
-Return 200 OK to acknowledge successful receipt.
+| Retry | When |
+| --- | --- |
+| 1 | 2 minutes after the failure |
+| 2 | 6 minutes after the previous retry |
+| 3 | 30 minutes after the previous retry |
+| 4 | 1 hour after the previous retry |
+| 5 | 5 hours after the previous retry |
+| 6 | 1 day after the previous retry |
+| 7 | 2 days after the previous retry |
+
+Timeouts:
+
+| Timeout | Test site | Live site |
+| --- | --- | --- |
+| Connection | 10 seconds | 20 seconds |
+| Read | 10 seconds | 20 seconds |
+| Total webhook execution | 20 seconds | 60 seconds |
+
+Save the event, return a `2XX` status, and process the event afterwards, for example from a queue. A handler that does the processing before it responds can exceed these timeouts, and Chargebee then retries the event. Source: https://www.chargebee.com/docs/billing/2.0/site-configuration/webhook_settings.md
