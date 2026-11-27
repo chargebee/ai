@@ -8,6 +8,7 @@
   - [Idempotent requests](https://apidocs.chargebee.com/docs/api/idempotency.md)
   - [Webhooks](https://apidocs.chargebee.com/docs/api/webhooks.md)
   - [Advanced features](https://apidocs.chargebee.com/docs/api/advanced-features.md)
+  - [Asynchronous API](https://apidocs.chargebee.com/docs/api/async_response/async-response-object.md)
   - [API Changelog](https://www.chargebee.com/help/api-updates/)
 
 # Business entities
@@ -46,8 +47,12 @@
   - [Update account hierarchy access settings for a customer](https://apidocs.chargebee.com/docs/api/customers/update-hierarchy-access-settings-for-a-customer.md)
   - [Link a customer to an account hierarchy](https://apidocs.chargebee.com/docs/api/customers/link-a-customer.md)
   - [Unlink a customer from its parent account](https://apidocs.chargebee.com/docs/api/customers/delink-a-customer.md)
+  - [Send payment request email](https://apidocs.chargebee.com/docs/api/customers/send-payment-request-email.md)
 - Hierarchies
   - [Hierarchy object](https://apidocs.chargebee.com/docs/api/hierarchies/hierarchy-object.md)
+- Email logs
+  - [Email log object](https://apidocs.chargebee.com/docs/api/email_logs/email-log-object.md)
+  - [List email logs for a customer](https://apidocs.chargebee.com/docs/api/email_logs/list-email-logs-for-a-customer.md)
 
 # Subscriptions
 
@@ -89,13 +94,13 @@
   - [List subscription ramps](https://apidocs.chargebee.com/docs/api/ramps/list-ramps.md)
   - [Delete a subscription ramp](https://apidocs.chargebee.com/docs/api/ramps/delete-a-ramp.md)
   - [Retrieve a subscription ramp](https://apidocs.chargebee.com/docs/api/ramps/retrieve-a-ramp.md)
-- Usages
-  - [Usage object](https://apidocs.chargebee.com/docs/api/usages/usage-object.md)
-  - [Delete a usage](https://apidocs.chargebee.com/docs/api/usages/delete-a-usage.md)
-  - [Create a usage](https://apidocs.chargebee.com/docs/api/usages/create-a-usage.md)
-  - [List usages](https://apidocs.chargebee.com/docs/api/usages/list-usages.md)
-  - [Retrieve a usage](https://apidocs.chargebee.com/docs/api/usages/retrieve-a-usage.md)
+- Usages (legacy metered billing; for new usage-based billing integrations use the Usage Events API under Usage Based Billing)
+  - [Usages: object, attributes and operations](https://apidocs.chargebee.com/docs/api/usages/usage-object.md)
   - [Retrieve Usages for an Invoice as PDF](https://apidocs.chargebee.com/docs/api/usages/retrieve-usages-for-an-invoice-as-pdf.md)
+- Purchases
+  - [Purchase object](https://apidocs.chargebee.com/docs/api/purchases/purchase-object.md)
+  - [Create a purchase](https://apidocs.chargebee.com/docs/api/purchases/create-a-purchase.md)
+  - [Estimates for purchase](https://apidocs.chargebee.com/docs/api/purchases/estimates-for-purchase.md)
 - Discounts
   - [Discount object](https://apidocs.chargebee.com/docs/api/discounts/discount-object.md)
 - Contract terms
@@ -123,7 +128,7 @@
   - [Retrieve Store Subscription](https://apidocs.chargebee.com/docs/api/in_app_subscriptions/retrieve-store-subscription.md)
 - Non subscriptions
   - [Non subscription object](https://apidocs.chargebee.com/docs/api/non_subscriptions/non-subscription-object.md)
-  - [One time purchase](https://apidocs.chargebee.com/docs/api/non_subscriptions/one-time-purchase.md)
+  - [One time purchase](https://apidocs.chargebee.com/docs/api/non_subscriptions/one-time-purchase)
 - [In-app purchase events](https://apidocs.chargebee.com/docs/api/in_app_purchase_events.md)
 
 # Recorded purchases
@@ -187,6 +192,8 @@
   - [List payment reference numbers](https://apidocs.chargebee.com/docs/api/invoices/list-payment-reference-numbers.md)
   - [Apply payment schedule scheme to an invoice](https://apidocs.chargebee.com/docs/api/invoices/apply-payment-schedule-scheme-to-an-invoice.md)
   - [Retrieve payment schedules for an invoice](https://apidocs.chargebee.com/docs/api/invoices/retrieve-payment-schedules-for-an-invoice.md)
+  - [Send invoice email](https://apidocs.chargebee.com/docs/api/invoices/send-invoice-email.md)
+  - [Void authorizations before capture](https://apidocs.chargebee.com/docs/api/invoices/void-authorizations-before-capture.md)
 - Advance invoice schedules
   - [Advance invoice schedule object](https://apidocs.chargebee.com/docs/api/advance_invoice_schedules/advance-invoice-schedule-object.md)
 - Credit notes
@@ -204,6 +211,8 @@
   - [Resend failed einvoice in credit notes](https://apidocs.chargebee.com/docs/api/credit_notes/resend-failed-einvoice-in-credit-notes.md)
   - [Import credit note](https://apidocs.chargebee.com/docs/api/credit_notes/import-credit-note.md)
   - [Send an einvoice for credit notes](https://apidocs.chargebee.com/docs/api/credit_notes/send-an-einvoice-for-credit-notes.md)
+  - [Send credit note email](https://apidocs.chargebee.com/docs/api/credit_notes/send-credit-note-email.md)
+  - [Update credit note details](https://apidocs.chargebee.com/docs/api/credit_notes/update-credit-note-details.md)
 - Promotional credits
   - [Promotional credit object](https://apidocs.chargebee.com/docs/api/promotional_credits/promotional-credit-object.md)
   - [Set Promotional Credits](https://apidocs.chargebee.com/docs/api/promotional_credits/set-promotional-credits.md)
@@ -222,11 +231,17 @@
   - [Payment reference number object](https://apidocs.chargebee.com/docs/api/payment_reference_numbers/payment-reference-number-object.md)
 - Payment schedules
   - [Payment schedule object](https://apidocs.chargebee.com/docs/api/payment_schedules/payment-schedule-object.md)
+  - [List payment schedules](https://apidocs.chargebee.com/docs/api/payment_schedules/list-payment-schedules.md)
 - Payment schedule schemes
   - [Payment schedule scheme object](https://apidocs.chargebee.com/docs/api/payment_schedule_schemes/payment-schedule-scheme-object.md)
   - [Create a payment schedule scheme](https://apidocs.chargebee.com/docs/api/payment_schedule_schemes/create-a-payment-schedule-scheme.md)
   - [Retrieve a payment schedule scheme](https://apidocs.chargebee.com/docs/api/payment_schedule_schemes/retrieve-a-payment-schedule-scheme.md)
   - [Delete a payment schedule scheme](https://apidocs.chargebee.com/docs/api/payment_schedule_schemes/delete-a-payment-schedule-scheme.md)
+  - [List payment schedule schemes](https://apidocs.chargebee.com/docs/api/payment_schedule_schemes/list-payment-schedule-schemes.md)
+- E-invoices
+  - [E-invoice object](https://apidocs.chargebee.com/docs/api/einvoices/einvoice-object.md)
+  - [List e-invoices](https://apidocs.chargebee.com/docs/api/einvoices/list-e-invoices.md)
+  - [Retrieve an e-invoice](https://apidocs.chargebee.com/docs/api/einvoices/retrieve-an-e-invoice.md)
 
 # Quotes
 
@@ -254,6 +269,9 @@
   - [Quoted charge object](https://apidocs.chargebee.com/docs/api/quoted_charges/quoted-charge-object.md)
 - Quoted ramps
   - [Quoted ramp object](https://apidocs.chargebee.com/docs/api/quoted_ramps/quoted-ramp-object.md)
+- Quote entitlements
+  - [Quote entitlement object](https://apidocs.chargebee.com/docs/api/quote_entitlements/quote-entitlement-object.md)
+  - [List quote entitlements](https://apidocs.chargebee.com/docs/api/quote_entitlements/list-quote-entitlements.md)
 
 # Estimates
 
@@ -358,6 +376,13 @@
   - [Retrieve a coupon code](https://apidocs.chargebee.com/docs/api/coupon_codes/retrieve-a-coupon-code.md)
   - [Archive a coupon code](https://apidocs.chargebee.com/docs/api/coupon_codes/archive-a-coupon-code.md)
 - [Using business entity filters in product catalog list APIs](https://apidocs.chargebee.com/docs/api/using_business_entity_filters_in_product_catalog_list_apis.md)
+- Price ramps
+  - [Price ramp object](https://apidocs.chargebee.com/docs/api/price_ramps/price-ramp-object.md)
+  - [Create a price ramp](https://apidocs.chargebee.com/docs/api/price_ramps/create-a-price-ramp.md)
+  - [Delete a price ramp](https://apidocs.chargebee.com/docs/api/price_ramps/delete-a-price-ramp.md)
+  - [List price ramps](https://apidocs.chargebee.com/docs/api/price_ramps/list-price-ramps.md)
+  - [Retrieve a price ramp](https://apidocs.chargebee.com/docs/api/price_ramps/retrieve-a-price-ramp.md)
+  - [Update a price ramp](https://apidocs.chargebee.com/docs/api/price_ramps/update-a-price-ramp.md)
 
 # Offers
 
@@ -413,15 +438,83 @@
 
 # Usage Based Billing
 
+- Metered features
+  - [Metered feature object](https://apidocs.chargebee.com/docs/api/metered_features/metered-feature-object.md)
+  - [Create a metered feature](https://apidocs.chargebee.com/docs/api/metered_features/create-a-metered-feature.md)
+  - [Archive a metered feature](https://apidocs.chargebee.com/docs/api/metered_features/archive-a-metered-feature.md)
+  - [Reactivate a metered feature](https://apidocs.chargebee.com/docs/api/metered_features/reactivate-a-metered-feature.md)
+  - [Delete a metered feature](https://apidocs.chargebee.com/docs/api/metered_features/delete-a-metered-feature.md)
+- Meters
+  - [Meter object](https://apidocs.chargebee.com/docs/api/meters/meter-object.md)
+  - [List all available meters](https://apidocs.chargebee.com/docs/api/meters/list-all-available-meters.md)
 - Usage events
-  - [Usage event object](https://apidocs.chargebee.com/docs/api/usage_events/v2-usage-object.md)
+  - [Usage event object](https://apidocs.chargebee.com/docs/api/usage_events/usage-event-object.md)
   - [Ingest a usage event](https://apidocs.chargebee.com/docs/api/usage_events/create-a-usage-event.md)
   - [Ingest usage events in batch](https://apidocs.chargebee.com/docs/api/usage_events/ingest-usages-in-batch.md)
-  - [Upload usage events using file](https://apidocs.chargebee.com/docs/api/usage_events/upload-usage-events-using-file.md)
+- Usage summary
+  - [Usage summary object](https://apidocs.chargebee.com/docs/api/usage_summary/usage-summary-object.md)
+  - [Retrieve usage summary for a subscription](https://apidocs.chargebee.com/docs/api/usage_summary/retrieve-usage-summary-for-a-subscription.md)
+- Alerts
+  - [Alert object](https://apidocs.chargebee.com/docs/api/alerts/alert-object.md)
+  - [Create an alert](https://apidocs.chargebee.com/docs/api/alerts/create-an-alert.md)
+  - [Update an alert](https://apidocs.chargebee.com/docs/api/alerts/update-an-alert.md)
+  - [Retrieve an alert](https://apidocs.chargebee.com/docs/api/alerts/retrieve-an-alert.md)
+  - [List alerts](https://apidocs.chargebee.com/docs/api/alerts/list-alerts.md)
+  - [Delete an alert](https://apidocs.chargebee.com/docs/api/alerts/delete-an-alert.md)
+  - [List applicable alerts for a subscription](https://apidocs.chargebee.com/docs/api/alerts/list-applicable-alerts-for-a-subscription.md)
+- Alert statuses
+  - [Alert status object](https://apidocs.chargebee.com/docs/api/alert_statuses/alert-status-object.md)
+  - [List alert statuses for a subscription](https://apidocs.chargebee.com/docs/api/alert_statuses/list-alert-statuses-for-a-subscription.md)
+  - [List alert statuses for an alert](https://apidocs.chargebee.com/docs/api/alert_statuses/list-alert-statuses-for-an-alert.md)
 - Usage files
   - [Usage file object](https://apidocs.chargebee.com/docs/api/usage_files/usage-file-object.md)
   - [Retrieve usage file upload URL](https://apidocs.chargebee.com/docs/api/usage_files/get-usages-file-upload-url.md)
   - [Retrieve file processing status](https://apidocs.chargebee.com/docs/api/usage_files/get-uploaded-file-processing-status.md)
+- Usage charges
+  - [Usage charge object](https://apidocs.chargebee.com/docs/api/usage_charges/usage-charge-object.md)
+  - [Retrieve usage charges for a subscription](https://apidocs.chargebee.com/docs/api/usage_charges/retrieve-usage-charges-for-a-subscription.md)
+
+# Credit-based billing
+
+- Credit units
+  - [Credit unit object](https://apidocs.chargebee.com/docs/api/credit_units/credit-unit-object.md)
+  - [Create a credit unit](https://apidocs.chargebee.com/docs/api/credit_units/create-a-credit-unit.md)
+  - [Update a credit unit](https://apidocs.chargebee.com/docs/api/credit_units/update-a-credit-unit.md)
+  - [List credit units](https://apidocs.chargebee.com/docs/api/credit_units/list-credit-units.md)
+  - [Archive a credit unit](https://apidocs.chargebee.com/docs/api/credit_units/archive-a-credit-unit.md)
+  - [Reactivate a credit unit](https://apidocs.chargebee.com/docs/api/credit_units/reactivate-a-credit-unit.md)
+- Grant blocks
+  - [Grant block object](https://apidocs.chargebee.com/docs/api/grant_blocks/grant-block-object.md)
+  - [List grant blocks](https://apidocs.chargebee.com/docs/api/grant_blocks/list-grant-blocks.md)
+- Ledger account balances
+  - [Ledger account balance object](https://apidocs.chargebee.com/docs/api/ledger_account_balances/ledger-account-balance-object.md)
+  - [List ledger account balances](https://apidocs.chargebee.com/docs/api/ledger_account_balances/list-ledger-account-balances.md)
+  - [Update the overdraft limit](https://apidocs.chargebee.com/docs/api/ledger_account_balances/update-overdraft-limit.md)
+- Ledger entries
+  - [Ledger entry object](https://apidocs.chargebee.com/docs/api/ledger_entries/ledger-entry-object.md)
+- Ledger operations
+  - [Ledger operation object](https://apidocs.chargebee.com/docs/api/ledger_operations/ledger-operation-object.md)
+  - [Allocate](https://apidocs.chargebee.com/docs/api/ledger_operations/allocate.md)
+  - [Authorize](https://apidocs.chargebee.com/docs/api/ledger_operations/authorize.md)
+  - [Capture](https://apidocs.chargebee.com/docs/api/ledger_operations/capture.md)
+  - [Capture authorization](https://apidocs.chargebee.com/docs/api/ledger_operations/capture-authorization.md)
+  - [Release authorization](https://apidocs.chargebee.com/docs/api/ledger_operations/release-authorization.md)
+  - [Retrieve ledger operation](https://apidocs.chargebee.com/docs/api/ledger_operations/retrieve-ledger-operation.md)
+  - [List ledger operations](https://apidocs.chargebee.com/docs/api/ledger_operations/list-ledger-operations.md)
+- Credit rates
+  - [Credit rate object](https://apidocs.chargebee.com/docs/api/credit_rates/credit-rate-object.md)
+  - [Create a credit rate](https://apidocs.chargebee.com/docs/api/credit_rates/create-a-credit-rate.md)
+  - [List credit rate versions](https://apidocs.chargebee.com/docs/api/credit_rates/list-credit-rate-versions.md)
+  - [Remove a credit rate override](https://apidocs.chargebee.com/docs/api/credit_rates/remove-a-credit-rate-override.md)
+  - [Retrieve a credit rate](https://apidocs.chargebee.com/docs/api/credit_rates/retrieve-a-credit-rate.md)
+  - [Retrieve a credit rate override](https://apidocs.chargebee.com/docs/api/credit_rates/retrieve-a-credit-rate-override.md)
+  - [Set a credit rate override](https://apidocs.chargebee.com/docs/api/credit_rates/set-a-credit-rate-override.md)
+  - [Update a credit rate](https://apidocs.chargebee.com/docs/api/credit_rates/update-a-credit-rate.md)
+- Credit rate overrides
+  - [Credit rate override object](https://apidocs.chargebee.com/docs/api/credit_rate_overrides/credit-rate-override-object.md)
+- Subscription credit rates
+  - [Subscription credit rate object](https://apidocs.chargebee.com/docs/api/subscription_credit_rates/subscription-credit-rate-object.md)
+  - [List credit rates for a subscription](https://apidocs.chargebee.com/docs/api/subscription_credit_rates/list-credit-rates-for-a-subscription.md)
 
 # Hosted pages
 
@@ -434,7 +527,6 @@
   - [Claim a Gift subscription](https://apidocs.chargebee.com/docs/api/hosted_pages/claim-a-gift-subscription.md)
   - [Create checkout to update a subscription](https://apidocs.chargebee.com/docs/api/hosted_pages/create-checkout-to-update-a-subscription.md)
   - [Retrieve Direct Debit Agreement PDF](https://apidocs.chargebee.com/docs/api/hosted_pages/retrieve-direct-debit-agreement-pdf.md)
-  - [Update payment method](https://apidocs.chargebee.com/docs/api/hosted_pages/update-payment-method.md)
   - [Acknowledge a hosted page](https://apidocs.chargebee.com/docs/api/hosted_pages/acknowledge-a-hosted-page.md)
   - [Manage Payment Sources](https://apidocs.chargebee.com/docs/api/hosted_pages/manage-payment-sources.md)
   - [Retrieve a hosted page](https://apidocs.chargebee.com/docs/api/hosted_pages/retrieve-a-hosted-page.md)
@@ -476,6 +568,7 @@
   - [Delete a payment source](https://apidocs.chargebee.com/docs/api/payment_sources/delete-a-payment-source.md)
   - [Update a card payment source](https://apidocs.chargebee.com/docs/api/payment_sources/update-a-card-payment-source.md)
   - [Local delete a payment source](https://apidocs.chargebee.com/docs/api/payment_sources/local-delete-a-payment-source.md)
+  - [List gateway payment method tokens for a payment source](https://apidocs.chargebee.com/docs/api/payment_sources/list-gateway-payment-method-tokens-for-a-payment-source.md)
 - Payment intents
   - [Payment intent object](https://apidocs.chargebee.com/docs/api/payment_intents/payment-intent-object.md)
   - [Update a payment intent](https://apidocs.chargebee.com/docs/api/payment_intents/update-a-payment-intent.md)
@@ -513,9 +606,35 @@
   - [List vouchers for a customer](https://apidocs.chargebee.com/docs/api/payment_vouchers/list-vouchers-for-a-customer.md)
   - [List vouchers for an invoice](https://apidocs.chargebee.com/docs/api/payment_vouchers/list-vouchers-for-an-invoice.md)
   - [Retrieve voucher data](https://apidocs.chargebee.com/docs/api/payment_vouchers/retrieve-voucher-data.md)
+- Disputes
+  - [Dispute object](https://apidocs.chargebee.com/docs/api/disputes/dispute-object.md)
+  - [List disputes](https://apidocs.chargebee.com/docs/api/disputes/list-disputes.md)
+  - [Retrieve a dispute](https://apidocs.chargebee.com/docs/api/disputes/retrieve-a-dispute.md)
 - [3DS card payments](https://apidocs.chargebee.com/docs/api/3ds_card_payments.md)
 - [Payment parameters](https://apidocs.chargebee.com/docs/api/payment_parameters.md)
 - [Gateway error references](https://apidocs.chargebee.com/docs/api/gateway_error_references.md)
+- Collections payment promises
+  - [Collections payment promise object](https://apidocs.chargebee.com/docs/api/collections_payment_promises/collections-payment-promise-object.md)
+  - [Cancel a collections payment promise](https://apidocs.chargebee.com/docs/api/collections_payment_promises/cancel-a-collections-payment-promise.md)
+  - [Create a collections payment promise](https://apidocs.chargebee.com/docs/api/collections_payment_promises/create-a-collections-payment-promise.md)
+  - [List collections payment promises](https://apidocs.chargebee.com/docs/api/collections_payment_promises/list-collections-payment-promises.md)
+  - [Retrieve a payment promise](https://apidocs.chargebee.com/docs/api/collections_payment_promises/retrieve-a-payment-promise.md)
+  - [Update a collections payment promise](https://apidocs.chargebee.com/docs/api/collections_payment_promises/update-a-collections-payment-promise.md)
+- Invoice retry contexts
+  - [Invoice retry context object](https://apidocs.chargebee.com/docs/api/invoice_retry_contexts/invoice-retry-context-object.md)
+  - [List invoice retry contexts](https://apidocs.chargebee.com/docs/api/invoice_retry_contexts/list-invoice-retry-contexts.md)
+- Retry segments
+  - [Retry segment object](https://apidocs.chargebee.com/docs/api/retry_segments/retry-segment-object.md)
+  - [List retry segments](https://apidocs.chargebee.com/docs/api/retry_segments/list-retry-segments.md)
+  - [Retrieve a retry segment](https://apidocs.chargebee.com/docs/api/retry_segments/retrieve-a-retry-segment.md)
+- Gateway request logs
+  - [Gateway request log object](https://apidocs.chargebee.com/docs/api/gateway_request_logs/gateway-request-log-object.md)
+  - [List gateway request logs](https://apidocs.chargebee.com/docs/api/gateway_request_logs/list-gateway-request-logs.md)
+  - [Retrieve a gateway request log](https://apidocs.chargebee.com/docs/api/gateway_request_logs/retrieve-a-gateway-request-log.md)
+- Gateway webhook logs
+  - [Gateway webhook log object](https://apidocs.chargebee.com/docs/api/gateway_webhook_logs/gateway-webhook-log-object.md)
+  - [List gateway webhook logs](https://apidocs.chargebee.com/docs/api/gateway_webhook_logs/list-gateway-webhook-logs.md)
+  - [Retrieve a gateway webhook log](https://apidocs.chargebee.com/docs/api/gateway_webhook_logs/retrieve-a-gateway-webhook-log.md)
 
 # Currencies
 
@@ -562,8 +681,37 @@
   - [Export Invoices](https://apidocs.chargebee.com/docs/api/exports/export-invoices.md)
   - [Export Differential Price](https://apidocs.chargebee.com/docs/api/exports/export-differential-price.md)
   - [Export Price Variants](https://apidocs.chargebee.com/docs/api/exports/export-price-variants.md)
+  - [Export Subscription Ramps](https://apidocs.chargebee.com/docs/api/exports/export-subscription-ramps.md)
 - Downloads
   - [Download object](https://apidocs.chargebee.com/docs/api/downloads/download-object.md)
+
+# Business rules
+
+- Business rules
+  - [Business rule object](https://apidocs.chargebee.com/docs/api/business_rules/business-rule-object.md)
+  - [Create a business rule](https://apidocs.chargebee.com/docs/api/business_rules/create-a-business-rule.md)
+  - [Retrieve a business rule](https://apidocs.chargebee.com/docs/api/business_rules/retrieve-a-business-rule.md)
+  - [List business rules](https://apidocs.chargebee.com/docs/api/business_rules/list-business-rules.md)
+  - [Apply business rules](https://apidocs.chargebee.com/docs/api/business_rules/apply-business-rules.md)
+  - [Activate a business rule](https://apidocs.chargebee.com/docs/api/business_rules/activate-a-business-rule.md)
+  - [Deactivate a business rule](https://apidocs.chargebee.com/docs/api/business_rules/deactivate-a-business-rule.md)
+  - [Release a business rule](https://apidocs.chargebee.com/docs/api/business_rules/release-a-business-rule.md)
+  - [Delete a business rule](https://apidocs.chargebee.com/docs/api/business_rules/delete-a-business-rule.md)
+  - [Retrieve a business rule draft](https://apidocs.chargebee.com/docs/api/business_rules/retrieve-a-business-rule-draft.md)
+  - [Update a business rule draft](https://apidocs.chargebee.com/docs/api/business_rules/update-a-business-rule-draft.md)
+  - [Delete a business rule draft](https://apidocs.chargebee.com/docs/api/business_rules/delete-a-business-rule-draft.md)
+- Business rulesets
+  - [Business ruleset object](https://apidocs.chargebee.com/docs/api/business_rulesets/business-ruleset-object.md)
+  - [Create a business ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/create-a-business-ruleset.md)
+  - [Retrieve a business ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/retrieve-a-business-ruleset.md)
+  - [Update a business ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/update-a-business-ruleset.md)
+  - [List business rulesets](https://apidocs.chargebee.com/docs/api/business_rulesets/list-business-rulesets.md)
+  - [List rules in a business ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/list-rules-in-a-business-ruleset.md)
+  - [Add business rules to a ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/add-business-rules-to-a-ruleset.md)
+  - [Remove business rules from a ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/remove-business-rules-from-a-ruleset.md)
+  - [Activate a business ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/activate-a-business-ruleset.md)
+  - [Deactivate a business ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/deactivate-a-business-ruleset.md)
+  - [Delete a business ruleset](https://apidocs.chargebee.com/docs/api/business_rulesets/delete-a-business-ruleset.md)
 
 # Simulation Tools
 
@@ -589,3 +737,10 @@
 - [Upgrade to Product Catalog 2.0](https://apidocs.chargebee.com/docs/api/upgrade.md)
 - [Errors](https://apidocs.chargebee.com/docs/api/errors.md)
 - [Chargebee root and intermediate CA certificate updates](https://apidocs.chargebee.com/docs/api/tls_certificate_update_g2.md)
+- Preferences
+  - [Preference object](https://apidocs.chargebee.com/docs/api/preferences/preference-object.md)
+  - [List preferences](https://apidocs.chargebee.com/docs/api/preferences/list-preferences.md)
+  - [Update preferences](https://apidocs.chargebee.com/docs/api/preferences/update-preferences.md)
+- Preference definitions
+  - [Preference definition object](https://apidocs.chargebee.com/docs/api/preference_definitions/preference-definition-object.md)
+  - [List preference definitions](https://apidocs.chargebee.com/docs/api/preference_definitions/list-preference-definitions.md)
