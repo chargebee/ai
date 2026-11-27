@@ -53,6 +53,7 @@ const { customer } = await chargebee.customer.retrieve(customerId);
 
 // Product Catalog 2.0: create a subscription for an existing customer.
 // Retrying with the same idempotency key and parameters within 30 minutes returns the original result.
+// A 409 means the first request is still processing: wait for Retry-After, then retry with the same key.
 const { subscription } = await chargebee.subscription.createWithItems(
   customer.id,
   { subscription_items: [{ item_price_id: "pro-USD-monthly", quantity: 1 }] },

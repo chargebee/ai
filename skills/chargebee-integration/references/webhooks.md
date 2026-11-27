@@ -291,7 +291,7 @@ def receive(event):
 Events can arrive out of order. Most resources carry `resource_version`, a millisecond timestamp updated on each change; some, such as `impacted_items`, do not.
 
 - Update your stored copy of a resource only if the incoming `resource_version` is newer. Make the check and the write one atomic operation, such as a conditional update, so concurrent workers cannot overwrite a newer version with an older one.
-- Decide access from the stored subscription state, or by retrieving the subscription from Chargebee, not from the payload of the event being processed.
+- Decide access from the stored subscription state, or by retrieving the subscription from Chargebee, not from the payload of the event being processed. Process events for the same subscription one at a time, for example with a per-subscription lock or queue partition, so two workers cannot act on different versions.
 - Work that does not change access, such as recording a renewal, still runs for each new event ID, even when its resource snapshot is older.
 
 ```python

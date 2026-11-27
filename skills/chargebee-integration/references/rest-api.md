@@ -366,7 +366,7 @@ Not every attribute supports every operator; the list operation page for each re
 
 ## Idempotency
 
-Make POST requests safe to retry by sending a unique `chargebee-idempotency-key` header. For 30 minutes, a request with the same key and parameters is treated as a replay of the original and returns the original result. Replayed responses carry the `chargebee-idempotency-replayed` header. Details: https://apidocs.chargebee.com/docs/api/idempotency.md
+Make POST requests safe to retry by sending a unique `chargebee-idempotency-key` header. For 30 minutes, a request with the same key and parameters is treated as a replay of the original and returns the original result. Replayed responses carry the `chargebee-idempotency-replayed` header. A `409` means a request with the same key is still processing; wait for the `Retry-After` header, then retry with the same key. Details: https://apidocs.chargebee.com/docs/api/idempotency.md
 
 ## Rate Limiting
 
